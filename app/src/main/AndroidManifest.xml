@@ -20,6 +20,13 @@
         </activity>
         <activity android:name=".activities.ShopsActivity">
         </activity>
+
+            <!-- services -->
+
+            <!-- Content provider -->
+        <provider
+            android:authorities="io.keepcoding.madridguide.provider"
+            android:name=".manager.db.provider.MadridGuideProvider"/>
     </application>
 
 </manifest>

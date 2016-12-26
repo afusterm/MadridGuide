@@ -1,17 +1,23 @@
 package io.keepcoding.madridguide.activities;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.List;
 
 import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
+import io.keepcoding.madridguide.manager.db.DBConstants;
 import io.keepcoding.madridguide.manager.db.ShopDAO;
+import io.keepcoding.madridguide.manager.db.provider.MadridGuideProvider;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
 
-public class ShopsActivity extends AppCompatActivity {
+public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private ShopsFragment shopsFragment;
 
     @Override
@@ -20,9 +26,12 @@ public class ShopsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_shops);
 
         shopsFragment = (ShopsFragment) getSupportFragmentManager().findFragmentById(R.id.activity_shops_fragment_shops);
-        getShops();
+        // XXX getShops();
+        LoaderManager loaderManager = getSupportLoaderManager();
+        loaderManager.initLoader(0, null, this);
     }
 
+    // 1st attemp at async cursor load: works!
     public void getShops() {
         new Thread(new Runnable() {
             @Override
@@ -39,5 +48,29 @@ public class ShopsActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        CursorLoader loader = new CursorLoader(this,
+                MadridGuideProvider.SHOPS_URI,
+                DBConstants.ALL_COLUMNS,
+                null,
+                null,
+                null);
+
+        return loader;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        final Shops shops = ShopDAO.getShops(data);
+
+        shopsFragment.setShops(shops);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
