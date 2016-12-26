@@ -16,6 +16,8 @@ import io.keepcoding.madridguide.manager.db.ShopDAO;
 import io.keepcoding.madridguide.manager.db.provider.MadridGuideProvider;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.navigator.Navigator;
+import io.keepcoding.madridguide.views.OnElementClick;
 
 public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private ShopsFragment shopsFragment;
@@ -65,6 +67,13 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         final Shops shops = ShopDAO.getShops(data);
+
+        shopsFragment.setListener(new OnElementClick<Shop>() {
+            @Override
+            public void clickedOn(Shop shop, int position) {
+                Navigator.navigateFromShopsActivityToShopDetailActivity(ShopsActivity.this, shop);
+            }
+        });
 
         shopsFragment.setShops(shops);
     }

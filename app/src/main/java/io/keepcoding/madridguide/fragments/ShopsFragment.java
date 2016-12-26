@@ -13,12 +13,14 @@ import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.adapters.ShopsAdapter;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.views.OnElementClick;
 
 
 public class ShopsFragment extends Fragment {
     private RecyclerView shopsRecyclerView;
     private ShopsAdapter adapter;
     private Shops shops;
+    private OnElementClick<Shop> listener;
 
     public ShopsFragment() {
         // Required empty public constructor
@@ -39,10 +41,12 @@ public class ShopsFragment extends Fragment {
         adapter = new ShopsAdapter(shops, getActivity());
         shopsRecyclerView.setAdapter(adapter);
 
-        adapter.setOnElementClickListener(new ShopsAdapter.OnElementClick() {
+        adapter.setOnElementClickListener(new OnElementClick<Shop>() {
             @Override
             public void clickedOn(Shop shop, int position) {
-                // TODO: show shop detail
+                if (listener != null) {
+                    listener.clickedOn(shop, position);
+                }
             }
         });
     }
@@ -54,5 +58,13 @@ public class ShopsFragment extends Fragment {
     public void setShops(Shops shops) {
         this.shops = shops;
         updateUI();
+    }
+
+    public OnElementClick<Shop> getListener() {
+        return listener;
+    }
+
+    public void setListener(OnElementClick<Shop> listener) {
+        this.listener = listener;
     }
 }
