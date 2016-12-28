@@ -7,6 +7,10 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import java.util.List;
 
 import io.keepcoding.madridguide.R;
@@ -21,6 +25,8 @@ import io.keepcoding.madridguide.views.OnElementClick;
 
 public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private ShopsFragment shopsFragment;
+    private MapFragment mapFragment;
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +34,15 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_shops);
 
         shopsFragment = (ShopsFragment) getSupportFragmentManager().findFragmentById(R.id.activity_shops_fragment_shops);
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+
+            }
+        });
+
         // XXX getShops();
         LoaderManager loaderManager = getSupportLoaderManager();
         loaderManager.initLoader(0, null, this);

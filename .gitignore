@@ -51,6 +51,3 @@ captures/
 
 ### Android Patch ###
 gen-external-apklibs
-
-# config file with url
-app/src/main/res/values/config.xml
