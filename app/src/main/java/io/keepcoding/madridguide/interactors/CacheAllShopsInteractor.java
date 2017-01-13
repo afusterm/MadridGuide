@@ -1,11 +1,11 @@
 package io.keepcoding.madridguide.interactors;
 
 import android.content.Context;
-import android.os.Looper;
 
 import io.keepcoding.madridguide.manager.db.ShopDAO;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.util.MainThread;
 
 public class CacheAllShopsInteractor {
     public interface CacheAllShopsInteractorResponse {
@@ -28,11 +28,16 @@ public class CacheAllShopsInteractor {
                     }
                 }
 
-                Looper main = Looper.getMainLooper();
-                // TODO: put on main thread
-                if (response != null) {
-                    response.response(success);
-                }
+                final boolean shopsInserted = success;
+
+                MainThread.run(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (response != null) {
+                            response.response(shopsInserted);
+                        }
+                    }
+                });
             }
         }).start();
     }

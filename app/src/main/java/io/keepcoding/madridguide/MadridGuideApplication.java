@@ -8,9 +8,9 @@ import com.squareup.picasso.Picasso;
 import java.lang.ref.WeakReference;
 
 import io.keepcoding.madridguide.interactors.CacheAllShopsInteractor;
+import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor;
 import io.keepcoding.madridguide.interactors.GetAllShopsInteractor;
-import io.keepcoding.madridguide.manager.db.ShopDAO;
-import io.keepcoding.madridguide.model.Shop;
+import io.keepcoding.madridguide.interactors.GetAllShopsInteractorResponse;
 import io.keepcoding.madridguide.model.Shops;
 
 public class MadridGuideApplication extends Application {
@@ -22,34 +22,43 @@ public class MadridGuideApplication extends Application {
 
         appContext = new WeakReference<Context>(getApplicationContext());
 
-        // XXX insertTestDataInDB();
-
         Picasso.with(getApplicationContext()).setLoggingEnabled(true);
         Picasso.with(getApplicationContext()).setIndicatorsEnabled(true);
 
-        new GetAllShopsInteractor().execute(getApplicationContext(),
-            new GetAllShopsInteractor.GetAllShopsInteractorResponse() {
-                @Override
-                public void response(Shops shops) {
-                    new CacheAllShopsInteractor().execute(getApplicationContext(),
-                        shops, new CacheAllShopsInteractor.CacheAllShopsInteractorResponse() {
-                            @Override
-                            public void response(boolean success) {
+        getAllShopsFromLocalCache();
+    }
 
-                            }
-                        }
-                    );
+    private void getAllShopsFromLocalCache() {
+        new GetAllShopsFromLocalCacheInteractor().execute(getApplicationContext(), new GetAllShopsInteractorResponse() {
+            @Override
+            public void response(Shops shops) {
+                if (shops.size() > 0) {
+                    return;
+                }
+
+                getShopsFromInternetAndCache();
+            }
+        });
+    }
+
+    private void getShopsFromInternetAndCache() {
+        new GetAllShopsInteractor().execute(getApplicationContext(), new GetAllShopsInteractorResponse() {
+            @Override
+            public void response(Shops shops) {
+                cacheAllShops(shops);
+            }
+        });
+    }
+
+    private void cacheAllShops(Shops shops) {
+        new CacheAllShopsInteractor().execute(getApplicationContext(), shops,
+            new CacheAllShopsInteractor.CacheAllShopsInteractorResponse() {
+                @Override
+                public void response(boolean success) {
+
                 }
             }
         );
-    }
-
-    private void insertTestDataInDB() {
-        ShopDAO dao = new ShopDAO(getAppContext());
-        for (int i = 0; i < 20; i++) {
-            Shop shop = new Shop(10, "Shop " + i).setLogoImgUrl("http://platea.pntic.mec.es/~mmotta/web11ab/elfary.jpg");
-            dao.insert(shop);
-        }
     }
 
     @Override

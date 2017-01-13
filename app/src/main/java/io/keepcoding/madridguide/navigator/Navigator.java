@@ -19,7 +19,7 @@ public class Navigator {
     public static Intent navigateFromShopsActivityToShopDetailActivity(final ShopsActivity shopsActivity,
                                                                        Shop detail) {
         final Intent i = new Intent(shopsActivity, ShopDetailActivity.class);
-        i.putExtra(Constants.INTENT_KEY_SHOP_DETAIL, detail);
+        i.putExtra(Constants.INTENT_KEY_DETAIL_SHOP, detail);
 
         shopsActivity.startActivity(i);
         return i;

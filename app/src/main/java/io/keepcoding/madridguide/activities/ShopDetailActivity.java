@@ -38,7 +38,7 @@ public class ShopDetailActivity extends AppCompatActivity {
     private void getDetailShopFromCallingIntent() {
         Intent i = getIntent();
         if (i != null) {
-            shop = (Shop) i.getSerializableExtra(Constants.INTENT_KEY_SHOP_DETAIL);
+            shop = (Shop) i.getSerializableExtra(Constants.INTENT_KEY_DETAIL_SHOP);
         }
     }
 

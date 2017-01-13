@@ -1,20 +1,23 @@
 package io.keepcoding.madridguide.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
-import java.util.List;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
+import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor;
+import io.keepcoding.madridguide.interactors.GetAllShopsInteractorResponse;
 import io.keepcoding.madridguide.manager.db.DBConstants;
 import io.keepcoding.madridguide.manager.db.ShopDAO;
 import io.keepcoding.madridguide.manager.db.provider.MadridGuideProvider;
@@ -25,8 +28,7 @@ import io.keepcoding.madridguide.views.OnElementClick;
 
 public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private ShopsFragment shopsFragment;
-    private MapFragment mapFragment;
-    private GoogleMap googleMap;
+    private SupportMapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,37 +36,39 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_shops);
 
         shopsFragment = (ShopsFragment) getSupportFragmentManager().findFragmentById(R.id.activity_shops_fragment_shops);
-        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
+                if (ActivityCompat.checkSelfPermission(ShopsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(ShopsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
+                    return;
+                }
+
+                googleMap.setMyLocationEnabled(true);
             }
         });
 
-        // XXX getShops();
-        LoaderManager loaderManager = getSupportLoaderManager();
-        loaderManager.initLoader(0, null, this);
-    }
-
-    // 1st attemp at async cursor load: works!
-    public void getShops() {
-        new Thread(new Runnable() {
+        GetAllShopsFromLocalCacheInteractor interactor = new GetAllShopsFromLocalCacheInteractor();
+        interactor.execute(this, new GetAllShopsInteractorResponse() {
             @Override
-            public void run() {
-                ShopDAO dao = new ShopDAO(ShopsActivity.this);
-                List<Shop> shopList = dao.query();
-                final Shops shops = Shops.build(shopList);
-
-                ShopsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        shopsFragment.setShops(shops);
-                    }
-                });
+            public void response(Shops shops) {
+                shopsFragment.setShops(shops);
             }
-        }).start();
+        });
+
+        shopsFragment.setListener(new OnElementClick<Shop>() {
+            @Override
+            public void clickedOn(Shop shop, int position) {
+                Navigator.navigateFromShopsActivityToShopDetailActivity(ShopsActivity.this, shop);
+            }
+        });
+
+        // acceso a los datos por content loader
+        LoaderManager loaderManager = getSupportLoaderManager();
+        // XXX loaderManager.initLoader(0, null, this);
     }
 
     @Override
