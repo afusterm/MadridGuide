@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.keepcoding.madridguide.R;
@@ -15,11 +17,23 @@ import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.util.Constants;
 
 public class ShopDetailActivity extends AppCompatActivity {
+    private static final String GOOGLE_MAPS_STATIC_IMAGE_BASE_URL = "http://maps.google.com/maps/api/staticmap";
+    private static final String TAG = ShopDetailActivity.class.getCanonicalName();
+
     @BindView(R.id.activity_shop_detail_shop_name_text)
     TextView shopNameText;
 
     @BindView(R.id.activity_shop_detail_shop_logo_image)
     ImageView shopLogoImage;
+
+    @BindView(R.id.activity_shop_detail_shop_description)
+    TextView shopDescriptionText;
+
+    @BindView(R.id.activity_shop_detail_shop_address)
+    TextView shopAddressText;
+
+    @BindView(R.id.activity_shop_detail_image_map)
+    ImageView shopMapImage;
 
     Shop shop;
 
@@ -43,10 +57,17 @@ public class ShopDetailActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+        final String urlImageMap = String.format(Locale.ENGLISH, "%s?center=%f,%f&zoom=17&size=320x220&scale=2",
+                GOOGLE_MAPS_STATIC_IMAGE_BASE_URL, shop.getLatitude(), shop.getLongitude());
+
         shopNameText.setText(shop.getName());
+        shopDescriptionText.setText(shop.getDescription());
+        shopAddressText.setText(shop.getAddress());
         Picasso.with(this)
                 .load(shop.getLogoImgUrl())
                 .into(shopLogoImage);
-
+        Picasso.with(this)
+                .load(urlImageMap)
+                .into(shopMapImage);
     }
 }

@@ -1,6 +1,10 @@
 <resources>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">0dp</dimen>
-    <dimen name="activity_vertical_margin">0dp</dimen>
+    <dimen name="activity_vertical_margin">10dp</dimen>
     <dimen name="activity_main_shops_button_width">100dp</dimen>
+    <dimen name="activity_shop_detail_text_margin_left">20dp</dimen>
+    <dimen name="activity_shop_detail_text_margin_right">20dp</dimen>
+    <dimen name="activity_shop_detail_text_margin_top">40dp</dimen>
+    <dimen name="activity_shop_detail_map_margin_top">20dp</dimen>
 </resources>

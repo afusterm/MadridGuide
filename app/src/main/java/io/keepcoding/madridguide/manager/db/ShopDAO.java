@@ -152,6 +152,7 @@ public class ShopDAO implements DAOPersistable<Shop> {
         shop.setImageUrl(c.getString(c.getColumnIndex(KEY_SHOP_IMAGE_URL)));
         shop.setLogoImgUrl(c.getString(c.getColumnIndex(KEY_SHOP_LOGO_IMAGE_URL)));
         shop.setLatitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LATITUDE)));
+        shop.setLongitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LONGITUDE)));
         shop.setUrl(c.getString(c.getColumnIndex(KEY_SHOP_URL)));
         return shop;
     }

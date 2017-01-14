@@ -10,6 +10,8 @@ public class ShopEntity {
     @SerializedName("address") private String address;
     @SerializedName("url") private String url;
     @SerializedName("description_es") private String descriptionEs;
+    @SerializedName("gps_lat") private float latitude;
+    @SerializedName("gps_lon") private float longitude;
 
     public Long getId() {
         return id;
@@ -37,5 +39,13 @@ public class ShopEntity {
 
     public String getDescriptionEs() {
         return descriptionEs;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
     }
 }
