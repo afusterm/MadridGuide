@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
@@ -44,22 +46,26 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         shopsFragment = (ShopsFragment) getSupportFragmentManager().findFragmentById(R.id.activity_shops_fragment_shops);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-        setupMapFragment();
-        setupShopsFragment();
+        getShopsAndSetupFragments();
 
         // acceso a los datos por content loader
         LoaderManager loaderManager = getSupportLoaderManager();
         // XXX loaderManager.initLoader(0, null, this);
     }
 
-    private void setupShopsFragment() {
+    private void getShopsAndSetupFragments() {
         GetAllShopsFromLocalCacheInteractor interactor = new GetAllShopsFromLocalCacheInteractor();
         interactor.execute(this, new GetAllShopsInteractorResponse() {
             @Override
             public void response(Shops shops) {
-                shopsFragment.setShops(shops);
+                setupShopsFragment(shops);
+                setupMapFragment(shops);
             }
         });
+    }
+
+    private void setupShopsFragment(final @NonNull Shops shops) {
+        shopsFragment.setShops(shops);
 
         shopsFragment.setListener(new OnElementClick<Shop>() {
             @Override
@@ -69,7 +75,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
         });
     }
 
-    private void setupMapFragment() {
+    private void setupMapFragment(final @NonNull Shops shops) {
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -81,8 +87,18 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
 
                 centerMapOnMadrid(googleMap);
                 googleMap.setMyLocationEnabled(true);
+                putAllPins(googleMap, shops);
             }
         });
+    }
+
+    private void putAllPins(GoogleMap map, final @NonNull Shops shops) {
+        for (Shop shop: shops.allShops()) {
+            LatLng latlng = new LatLng(shop.getLatitude(), shop.getLongitude());
+            map.addMarker(new MarkerOptions()
+                    .position(latlng)
+                    .title(shop.getName()));
+        }
     }
 
     private void centerMapOnMadrid(GoogleMap googleMap) {
