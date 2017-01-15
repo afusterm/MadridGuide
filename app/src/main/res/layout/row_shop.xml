@@ -16,6 +16,8 @@
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceInverse"
+        android:textSize="18sp"
         tools:text="El corte inglés"/>
 
     <ImageView
