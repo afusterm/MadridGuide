@@ -36,9 +36,9 @@ import io.keepcoding.madridguide.navigator.Navigator;
 import io.keepcoding.madridguide.views.OnElementClick;
 
 public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    public static final double LATITUDE_MADRID = 40.4166922;
-    public static final double LONGITUDE_MADRID = -3.7038497;
-    public static final int ZOOM_MADRID = 10;
+    private static final double LATITUDE_MADRID = 40.4166922;
+    private static final double LONGITUDE_MADRID = -3.7038497;
+    private static final int ZOOM_MADRID = 10;
 
     private ShopsFragment shopsFragment;
     private SupportMapFragment mapFragment;

@@ -12,6 +12,7 @@ import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor
 import io.keepcoding.madridguide.interactors.GetAllShopsInteractor;
 import io.keepcoding.madridguide.interactors.GetAllShopsInteractorResponse;
 import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.util.NetworkUtils;
 
 public class MadridGuideApplication extends Application {
     private static WeakReference<Context> appContext;
@@ -36,7 +37,9 @@ public class MadridGuideApplication extends Application {
                     return;
                 }
 
-                getShopsFromInternetAndCache();
+                if (NetworkUtils.isNetworkAvailable(appContext.get())) {
+                    getShopsFromInternetAndCache();
+                }
             }
         });
     }
