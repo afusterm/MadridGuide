@@ -16,9 +16,14 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.keepcoding.madridguide.R;
+import io.keepcoding.madridguide.adapters.CustomInfoWindowAdapter;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
 import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor;
 import io.keepcoding.madridguide.interactors.GetAllShopsInteractorResponse;
@@ -87,18 +92,33 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
 
                 centerMapOnMadrid(googleMap);
                 googleMap.setMyLocationEnabled(true);
-                putAllPins(googleMap, shops);
+
+                final Map<Marker, Shop> markerShopMap = createMarkerShops(googleMap, shops);
+                googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater(), markerShopMap));
+
+                googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Shop shop = markerShopMap.get(marker);
+                        Navigator.navigateFromShopsActivityToShopDetailActivity(ShopsActivity.this, shop);
+                    }
+                });
             }
         });
     }
 
-    private void putAllPins(GoogleMap map, final @NonNull Shops shops) {
+    private Map<Marker, Shop> createMarkerShops(GoogleMap map, final @NonNull Shops shops) {
+        Map<Marker, Shop> markerShopMap = new HashMap<>((int)shops.size());
+
         for (Shop shop: shops.allShops()) {
             LatLng latlng = new LatLng(shop.getLatitude(), shop.getLongitude());
-            map.addMarker(new MarkerOptions()
-                    .position(latlng)
-                    .title(shop.getName()));
+            Marker marker = map.addMarker(new MarkerOptions()
+                                .position(latlng)
+                                .title(shop.getName()));
+            markerShopMap.put(marker, shop);
         }
+
+        return markerShopMap;
     }
 
     private void centerMapOnMadrid(GoogleMap googleMap) {
