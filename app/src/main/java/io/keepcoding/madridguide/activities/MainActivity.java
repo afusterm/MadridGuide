@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if (!NetworkUtils.isNetworkAvailable(this)) {
-            Snackbar.make(findViewById(android.R.id.content), "No hay conexión a Internet",
+            Snackbar.make(findViewById(android.R.id.content), R.string.activity_splash_no_internet_connection,
                     Snackbar.LENGTH_LONG).show();
         }
     }
