@@ -3,69 +3,35 @@ package io.keepcoding.madridguide.manager.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
 
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_ADDRESS;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_DESCRIPTION;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_ID;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_IMAGE_URL;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_LATITUDE;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_LOGO_IMAGE_URL;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_LONGITUDE;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_NAME;
-import static io.keepcoding.madridguide.manager.db.DBConstants.KEY_SHOP_URL;
-import static io.keepcoding.madridguide.manager.db.DBConstants.TABLE_SHOP;
-import static io.keepcoding.madridguide.manager.db.DBConstants.ALL_COLUMNS;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.ALL_COLUMNS;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_ADDRESS;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_DESCRIPTION;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_ID;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_IMAGE_URL;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_LATITUDE;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_LOGO_IMAGE_URL;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_LONGITUDE;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_NAME;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.KEY_SHOP_URL;
+import static io.keepcoding.madridguide.manager.db.DBConstants.Shop.TABLE_SHOP;
 
-public class ShopDAO implements DAOPersistable<Shop> {
-    private WeakReference<Context> context;
-    DBHelper dbHelper;
-    private SQLiteDatabase db;
+public class ShopDAO extends BaseDAO<Shop> {
 
     public ShopDAO(Context context, DBHelper dbHelper) {
-        this.context = new WeakReference<Context>(context);
-        this.dbHelper = dbHelper;
-        this.db = dbHelper.getDB();
+        super(context, dbHelper);
     }
 
-    public ShopDAO(Context context) {
-        this(context, DBHelper.getInstance(context));
-    }
-
-    /**
-     * Insert a shop in DB.
-     * @param shop shouldn't be null.
-     * @return 0 if shop is null, id if insert is OK, INVALID_ID if insert fails.
-     */
+    @NonNull
     @Override
-    public long insert(@NonNull Shop shop) {
-        if (shop == null) {
-            return 0;
-        }
-
-        db.beginTransaction();
-        long id = DBHelper.INVALID_ID;
-        try {
-            id = dbHelper.getWritableDatabase().insert(DBConstants.TABLE_SHOP, null, this.getContentValues(shop));
-            shop.setId(id);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
-
-        return id;
-    }
-
-    public static @NonNull ContentValues getContentValues(final @NonNull Shop shop) {
+    public ContentValues getContentValues(@NonNull Shop shop) {
         final ContentValues contentValues = new ContentValues();
 
         if (shop == null) {
@@ -82,6 +48,44 @@ public class ShopDAO implements DAOPersistable<Shop> {
         contentValues.put(KEY_SHOP_URL, shop.getUrl());
 
         return contentValues;
+    }
+
+    @Override
+    public Shop getElementFromCursor(Cursor c) {
+        long identifier = c.getLong(c.getColumnIndex(KEY_SHOP_ID));
+        String name = c.getString(c.getColumnIndex(KEY_SHOP_NAME));
+        Shop shop = new Shop(identifier, name);
+        shop.setAddress(c.getString(c.getColumnIndex(KEY_SHOP_ADDRESS)));
+        shop.setDescription(c.getString(c.getColumnIndex(KEY_SHOP_DESCRIPTION)));
+        shop.setImageUrl(c.getString(c.getColumnIndex(KEY_SHOP_IMAGE_URL)));
+        shop.setLogoImgUrl(c.getString(c.getColumnIndex(KEY_SHOP_LOGO_IMAGE_URL)));
+        shop.setLatitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LATITUDE)));
+        shop.setLongitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LONGITUDE)));
+        shop.setUrl(c.getString(c.getColumnIndex(KEY_SHOP_URL)));
+
+        return shop;
+    }
+
+    @NonNull
+    @Override
+    public String getTableName() {
+        return TABLE_SHOP;
+    }
+
+    @NonNull
+    @Override
+    public String getIdFieldName() {
+        return KEY_SHOP_ID;
+    }
+
+    @NonNull
+    @Override
+    public String[] getAllColumnNames() {
+        return ALL_COLUMNS;
+    }
+
+    public ShopDAO(Context context) {
+        this(context, DBHelper.getInstance(context));
     }
 
     public static @NonNull Shop getShopFromContentValues(final @NonNull ContentValues contentValues) {
@@ -102,88 +106,6 @@ public class ShopDAO implements DAOPersistable<Shop> {
     @Override
     public void update(long id, @NonNull Shop data) {
 
-    }
-
-    @Override
-    public int delete(long id) {
-        return db.delete(TABLE_SHOP, KEY_SHOP_ID + " = " + id, null); // 1st way
-        // XXX db.delete(TABLE_SHOP, KEY_SHOP_ID + " = ?", new String[] { "" + id }); // 2st way
-        // XXX ddb.delete(TABLE_SHOP, KEY_SHOP_ID + " = ? AND " + KEY_SHOP_NAME + " = ?",
-        // XXX         new String[] { "" + id, "pepito" });
-    }
-
-    @Override
-    public void deleteAll() {
-        db.delete(TABLE_SHOP, null, null);
-    }
-
-    @Nullable
-    @Override
-    public Cursor queryCursor() {
-        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, null, null, null, null, KEY_SHOP_ID);
-        if (c != null && c.getCount() > 0) {
-            c.moveToFirst();
-        }
-
-        return c;
-    }
-
-    @Override
-    public @Nullable Shop query(final long id) {
-        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, KEY_SHOP_ID + " = " + id, null, null, null, KEY_SHOP_ID);
-        if (c != null && c.getCount() == 1) {
-            c.moveToFirst();
-        } else {
-            return null;
-        }
-
-        Shop shop = getShop(c);
-
-        return shop;
-    }
-
-    @NonNull
-    public static Shop getShop(Cursor c) {
-        long identifier = c.getLong(c.getColumnIndex(KEY_SHOP_ID));
-        String name = c.getString(c.getColumnIndex(KEY_SHOP_NAME));
-        Shop shop = new Shop(identifier, name);
-        shop.setAddress(c.getString(c.getColumnIndex(KEY_SHOP_ADDRESS)));
-        shop.setDescription(c.getString(c.getColumnIndex(KEY_SHOP_DESCRIPTION)));
-        shop.setImageUrl(c.getString(c.getColumnIndex(KEY_SHOP_IMAGE_URL)));
-        shop.setLogoImgUrl(c.getString(c.getColumnIndex(KEY_SHOP_LOGO_IMAGE_URL)));
-        shop.setLatitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LATITUDE)));
-        shop.setLongitude(c.getFloat(c.getColumnIndex(KEY_SHOP_LONGITUDE)));
-        shop.setUrl(c.getString(c.getColumnIndex(KEY_SHOP_URL)));
-        return shop;
-    }
-
-    @Nullable
-    @Override
-    public List<Shop> query() {
-        Cursor c = queryCursor();
-
-        if (c == null || !c.moveToFirst()) {
-            return null;
-        }
-
-        List<Shop> shops = new LinkedList<>();
-
-        c.moveToFirst();
-        do {
-            Shop shop = getShop(c);
-            shops.add(shop);
-        } while (c.moveToNext());
-
-        return shops;
-    }
-
-    public Cursor queryCursor(long id) {
-        Cursor c = db.query(TABLE_SHOP, ALL_COLUMNS, "ID = " + id, null, null, null, KEY_SHOP_ID);
-        if (c != null && c.getCount() > 0) {
-            c.moveToFirst();
-        }
-
-        return c;
     }
 
     @NonNull

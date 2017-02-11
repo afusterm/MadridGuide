@@ -2,7 +2,7 @@ package io.keepcoding.madridguide.model;
 
 import java.io.Serializable;
 
-public class Shop implements Serializable {
+public class Shop extends BaseModel implements Serializable {
     private long id;
     private String name;
     private String imageUrl;

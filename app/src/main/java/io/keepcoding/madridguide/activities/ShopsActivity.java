@@ -131,7 +131,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         CursorLoader loader = new CursorLoader(this,
                 MadridGuideProvider.SHOPS_URI,
-                DBConstants.ALL_COLUMNS,
+                DBConstants.Shop.ALL_COLUMNS,
                 null,
                 null,
                 null);
