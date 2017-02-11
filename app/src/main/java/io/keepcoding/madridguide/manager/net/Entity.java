@@ -2,7 +2,7 @@ package io.keepcoding.madridguide.manager.net;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ShopEntity {
+public class Entity {
     @SerializedName("id") private Long id;
     @SerializedName("name") private String name;
     @SerializedName("img") private String img;

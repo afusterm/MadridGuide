@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
+import io.keepcoding.madridguide.manager.db.ActivityDAO;
 import io.keepcoding.madridguide.manager.db.ShopDAO;
 
 public class Cache {
@@ -22,8 +23,10 @@ public class Cache {
     }
 
     public static void delete(final @NonNull Context context) {
-        ShopDAO dao = new ShopDAO(context);
-        dao.deleteAll();
+        ShopDAO shopDAO = new ShopDAO(context);
+        shopDAO.deleteAll();
+        ActivityDAO activityDAO = new ActivityDAO(context);
+        activityDAO.deleteAll();
     }
 
     public static void setDayToNow(final @NonNull Context context) {

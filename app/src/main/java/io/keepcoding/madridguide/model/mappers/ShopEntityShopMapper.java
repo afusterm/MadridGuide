@@ -3,14 +3,14 @@ package io.keepcoding.madridguide.model.mappers;
 import java.util.LinkedList;
 import java.util.List;
 
-import io.keepcoding.madridguide.manager.net.ShopEntity;
+import io.keepcoding.madridguide.manager.net.Entity;
 import io.keepcoding.madridguide.model.Shop;
 
 public class ShopEntityShopMapper {
-    public List<Shop> map(List<ShopEntity> shopEntities) {
+    public List<Shop> map(List<Entity> shopEntities) {
         List<Shop> result = new LinkedList<>();
 
-        for (ShopEntity entity: shopEntities) {
+        for (Entity entity: shopEntities) {
             Shop shop = new Shop(entity.getId(), entity.getName());
 
             // TODO: detect current language

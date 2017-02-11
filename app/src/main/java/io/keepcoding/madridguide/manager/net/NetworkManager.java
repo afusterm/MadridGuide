@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -20,49 +19,59 @@ import java.util.List;
 import io.keepcoding.madridguide.R;
 
 public class NetworkManager {
-    public interface GetShopsListener {
-        public void getShopEntitiesSuccess(List<ShopEntity> result);
-        public void getShopEntitiesDidFail();
+    public interface GetEntitiesListener {
+        void getEntitiesSuccess(List<Entity> result);
+        void getEntitiesDidFail();
     }
 
-    WeakReference<Context> context;
+    private WeakReference<Context> context;
 
     public NetworkManager(Context context) {
         this.context = new WeakReference<Context>(context);
     }
 
-    public void getShopsFromServer(final @NonNull GetShopsListener listener) {
-        RequestQueue queue = Volley.newRequestQueue(context.get());
+    public void getShopsFromServer(final @NonNull GetEntitiesListener listener) {
         String url = context.get().getString(R.string.shops_url);
+        getEntitiesFromServer(listener, url);
+    }
+
+    public void getActivitiesFromServer(final @NonNull GetEntitiesListener listener) {
+        String url = context.get().getString(R.string.activities_url);
+        getEntitiesFromServer(listener, url);
+    }
+
+    private void getEntitiesFromServer(final @NonNull GetEntitiesListener listener, final @NonNull String url) {
+        RequestQueue queue = Volley.newRequestQueue(context.get());
         StringRequest request = new StringRequest(
                 url,
-                new Response.Listener<String>() {
+                new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d("JSON", response);
-                        List<ShopEntity> shopResponse = parseResponse(response);
+                        List<Entity> entityResponse = parseResponse(response);
 
                         if (listener != null) {
-                            listener.getShopEntitiesSuccess(shopResponse);
+                            listener.getEntitiesSuccess(entityResponse);
                         }
                     }
                 },
-                new Response.ErrorListener() {
+                new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         if (listener != null) {
-                            listener.getShopEntitiesDidFail();
+                            listener.getEntitiesDidFail();
                         }
                     }
                 }
         );
+
         queue.add(request);
     }
 
-    private List<ShopEntity> parseResponse(String response) {
+    private List<Entity> parseResponse(String response) {
         Reader reader = new StringReader(response);
         Gson gson = new GsonBuilder().create();
-        ShopResponse shopResponse = gson.fromJson(reader, ShopResponse.class);
-        return shopResponse.result;
+        Response resp = gson.fromJson(reader, Response.class);
+        return resp.result;
     }
 }
