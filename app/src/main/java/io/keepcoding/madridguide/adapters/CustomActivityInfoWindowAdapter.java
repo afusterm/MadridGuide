@@ -16,22 +16,22 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 
 import io.keepcoding.madridguide.R;
-import io.keepcoding.madridguide.model.Shop;
+import io.keepcoding.madridguide.model.Activity;
 
 
-public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
-    private Map<Marker, Shop> markerShopMap;
+public class CustomActivityInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private Map<Marker, Activity> markerActivityMap;
     private WeakReference<Context> context;
     private View view;
-    private ImageView shopLogoImageView;
-    private TextView shopNameTextView;
+    private ImageView logoImageView;
+    private TextView nameTextView;
 
-    public CustomInfoWindowAdapter(LayoutInflater inflater, final @NonNull Map<Marker, Shop> markerShopMap) {
-        this.markerShopMap = markerShopMap;
+    public CustomActivityInfoWindowAdapter(LayoutInflater inflater, final @NonNull Map<Marker, Activity> markerActivityMap) {
+        this.markerActivityMap = markerActivityMap;
         context = new WeakReference<>(inflater.getContext());
         view = inflater.inflate(R.layout.custom_info_contents, null);
-        shopLogoImageView = (ImageView) view.findViewById(R.id.custom_info_contents_shop_logo);
-        shopNameTextView = (TextView) view.findViewById(R.id.custom_info_contents_shop_name);
+        logoImageView = (ImageView) view.findViewById(R.id.custom_info_contents_logo);
+        nameTextView = (TextView) view.findViewById(R.id.custom_info_contents_name);
     }
 
     @Override
@@ -41,13 +41,13 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     @Override
     public View getInfoContents(final Marker marker) {
-        final Shop shop = markerShopMap.get(marker);
-        shopNameTextView.setText(shop.getName());
+        final Activity activity = markerActivityMap.get(marker);
+        nameTextView.setText(activity.getName());
 
         Picasso.with(context.get())
-                .load(shop.getLogoImgUrl())
+                .load(activity.getLogoImgUrl())
                 .placeholder(android.R.drawable.ic_menu_gallery)
-                .into(shopLogoImageView, new Callback() {
+                .into(logoImageView, new Callback() {
                     @Override
                     public void onSuccess() {
                         // When I click a marker, InfoWindow is shown and imageView shows placeholder
@@ -56,8 +56,8 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
                         if (marker.isInfoWindowShown()) {
                             marker.hideInfoWindow();
                             Picasso.with(context.get())
-                                    .load(shop.getLogoImgUrl())
-                                    .into(shopLogoImageView);
+                                    .load(activity.getLogoImgUrl())
+                                    .into(logoImageView);
                             marker.showInfoWindow();
                         }
                     }

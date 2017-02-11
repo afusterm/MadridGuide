@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import java.lang.ref.WeakReference;
 
+import io.keepcoding.madridguide.activities.ActivitiesActivity;
+import io.keepcoding.madridguide.activities.ActivityDetailActivity;
 import io.keepcoding.madridguide.activities.MainActivity;
 import io.keepcoding.madridguide.activities.ShopDetailActivity;
 import io.keepcoding.madridguide.activities.ShopsActivity;
@@ -21,12 +23,28 @@ public class Navigator {
         return i;
     }
 
+    public static Intent navigateFromMainActivityToActivitiesActivity(final MainActivity mainActivity) {
+        final Intent i = new Intent(mainActivity, ActivitiesActivity.class);
+        mainActivity.startActivity(i);
+
+        return i;
+    }
+
     public static Intent navigateFromShopsActivityToShopDetailActivity(final ShopsActivity shopsActivity,
                                                                        Shop detail) {
         final Intent i = new Intent(shopsActivity, ShopDetailActivity.class);
         i.putExtra(Constants.INTENT_KEY_DETAIL_SHOP, detail);
 
         shopsActivity.startActivity(i);
+        return i;
+    }
+
+    public static Intent navigateFromActivitiesActivityToActivityDetailActivity(final ActivitiesActivity activitiesActivity,
+                                                                       io.keepcoding.madridguide.model.Activity detail) {
+        final Intent i = new Intent(activitiesActivity, ActivityDetailActivity.class);
+        i.putExtra(Constants.INTENT_KEY_DETAIL_ACTIVITY, detail);
+
+        activitiesActivity.startActivity(i);
         return i;
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     android:id="@+id/activity_main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +9,26 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="io.keepcoding.madridguide.activities.MainActivity">
 
     <Button
         android:id="@+id/activity_main_shops_button"
-        android:layout_width="@dimen/activity_main_shops_button_width"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/activity_main_shops_button_width"
-        android:layout_centerHorizontal="true"
-        android:text="@string/activity_main_shops_button_text"/>
+        android:background="@drawable/elcorteingles_castellana"
+        android:text="@string/activity_main_shops_button_text"
+        android:textAppearance="?android:attr/textAppearanceInverse"
+        android:textSize="32sp"/>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/activity_main_activities_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/activity_main_shops_button_width"
+        android:background="@drawable/activities_background"
+        android:text="@string/activity_main_activities_button_text"
+        android:textAppearance="?android:attr/textAppearanceInverse"
+        android:textSize="32sp"
+        android:layout_marginTop="@dimen/activity_main_activties_button_margin_top"/>
+
+</LinearLayout>

@@ -8,38 +8,39 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.keepcoding.madridguide.R;
-import io.keepcoding.madridguide.model.Shop;
-import io.keepcoding.madridguide.model.Shops;
+import io.keepcoding.madridguide.model.Activities;
+import io.keepcoding.madridguide.model.Activity;
+import io.keepcoding.madridguide.views.ActivityRowViewHolder;
 import io.keepcoding.madridguide.views.OnElementClick;
-import io.keepcoding.madridguide.views.ShopRowViewHolder;
 
-public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
+
+public class ActivitiesAdapter extends RecyclerView.Adapter<ActivityRowViewHolder> {
     private final LayoutInflater layoutInflater;
-    private final Shops shops;
+    private final Activities activities;
 
-    private OnElementClick<Shop> listener;
+    private OnElementClick<Activity> listener;
 
-    public ShopsAdapter(Shops shops, Context context) {
-        this.shops = shops;
+    public ActivitiesAdapter(Activities activities, Context context) {
+        this.activities = activities;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
-    public ShopRowViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ActivityRowViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.row_entity, parent, false);
 
-        return new ShopRowViewHolder(view);
+        return new ActivityRowViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ShopRowViewHolder row, final int position) {
-        final Shop shop = shops.get(position);
-        row.setShop(shop);
+    public void onBindViewHolder(ActivityRowViewHolder row, final int position) {
+        final Activity activity = activities.get(position);
+        row.setActivity(activity);
         row.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ShopsAdapter.this.listener != null) {
-                    listener.clickedOn(shop, position);
+                if (ActivitiesAdapter.this.listener != null) {
+                    listener.clickedOn(activity, position);
                 }
             }
         });
@@ -47,7 +48,7 @@ public class ShopsAdapter extends RecyclerView.Adapter<ShopRowViewHolder> {
 
     @Override
     public int getItemCount() {
-        return (int) shops.size();
+        return (int) activities.size();
     }
 
     public void setOnElementClickListener(@NonNull final OnElementClick listener) {

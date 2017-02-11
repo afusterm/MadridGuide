@@ -12,36 +12,36 @@ import com.squareup.picasso.Picasso;
 import java.lang.ref.WeakReference;
 
 import io.keepcoding.madridguide.R;
-import io.keepcoding.madridguide.model.Shop;
+import io.keepcoding.madridguide.model.Activity;
 
 
-public class ShopRowViewHolder extends RecyclerView.ViewHolder {
+public class ActivityRowViewHolder extends RecyclerView.ViewHolder {
     private TextView nameTextView;
     private ImageView logoImageView;
     private ImageView backgroundImageView;
     private WeakReference<Context> context;
 
-    public ShopRowViewHolder(View rowShop) {
-        super(rowShop);
+    public ActivityRowViewHolder(View rowActivity) {
+        super(rowActivity);
 
-        context = new WeakReference<Context>(rowShop.getContext());
-        nameTextView = (TextView) rowShop.findViewById(R.id.row_entity_name);
-        logoImageView = (ImageView) rowShop.findViewById(R.id.row_entity_logo);
-        backgroundImageView = (ImageView) rowShop.findViewById(R.id.row_entity_background_image);
+        context = new WeakReference<>(rowActivity.getContext());
+        nameTextView = (TextView) rowActivity.findViewById(R.id.row_entity_name);
+        logoImageView = (ImageView) rowActivity.findViewById(R.id.row_entity_logo);
+        backgroundImageView = (ImageView) rowActivity.findViewById(R.id.row_entity_background_image);
     }
 
-    public void setShop(final @NonNull Shop shop) {
-        if (shop == null) {
+    public void setActivity(final @NonNull Activity activity) {
+        if (activity == null) {
             return;
         }
 
-        nameTextView.setText(shop.getName());
+        nameTextView.setText(activity.getName());
         Picasso.with(context.get())
-                .load(shop.getLogoImgUrl())
+                .load(activity.getLogoImgUrl())
                 .placeholder(android.R.drawable.ic_dialog_email)
                 .into(logoImageView);
         Picasso.with(context.get())
-                .load(shop.getImageUrl())
+                .load(activity.getImageUrl())
                 .into(backgroundImageView);
     }
 }

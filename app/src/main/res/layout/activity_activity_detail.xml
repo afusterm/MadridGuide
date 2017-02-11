@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-    android:id="@+id/activity_shop_detail"
+    android:id="@+id/activity_activity_detail"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="io.keepcoding.madridguide.activities.ShopDetailActivity">
+    tools:context="io.keepcoding.madridguide.activities.ActivityDetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,24 +21,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/activity_shop_detail_shop_name_text"
+            android:id="@+id/activity_activity_detail_activity_name_text"
             tools:text="El corte inglés"
             android:gravity="center"
             android:textSize="28sp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_toRightOf="@+id/activity_shop_detail_shop_logo_image"
-            android:layout_toEndOf="@+id/activity_shop_detail_shop_logo_image"/>
+            android:layout_toRightOf="@+id/activity_activity_detail_activity_logo_image"
+            android:layout_toEndOf="@+id/activity_activity_detail_activity_logo_image"/>
 
         <ImageView
-            android:id="@+id/activity_shop_detail_shop_logo_image"
+            android:id="@+id/activity_activity_detail_activity_logo_image"
             tools:src="@drawable/entity_detail_logo"
             android:layout_width="80dp"
             android:layout_height="80dp"/>
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/activity_shop_detail_shop_description"
+        android:id="@+id/activity_activity_detail_activity_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_shop_detail_text_margin_left"
@@ -49,7 +49,7 @@
         tools:text="El Grupo El Corte Inglés es la mayor cadena de grandes almacenes en Europa\r\ny una de las mayores compañías de distribución a nivel internacional. Su\r\nestrategia de diversificación y su empeño por adaptarse a las nuevas\r\nnecesidades y demandas del cliente, le ha llevado a crear nuevos formatos\r\ncomerciales como Hipercor, Supercor, Opencor, Bricor, Sfera, Informática El Corte Inglés, Óptica 2000, La Tienda en Casa y Primeriti, entre otros.\r\nSiguiendo esta línea de trabajo nos situamos al lado de los usuarios en las Redes Sociales. "/>
 
     <TextView
-        android:id="@+id/activity_shop_detail_shop_address"
+        android:id="@+id/activity_activity_detail_activity_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_shop_detail_text_margin_left"
@@ -60,7 +60,7 @@
         tools:text="Raimundo Fernández Villaverde, 65"/>
 
     <ImageView
-        android:id="@+id/activity_shop_detail_image_map"
+        android:id="@+id/activity_activity_detail_image_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_shop_detail_map_margin_top"

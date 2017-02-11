@@ -7,4 +7,5 @@
     <dimen name="activity_shop_detail_text_margin_right">20dp</dimen>
     <dimen name="activity_shop_detail_text_margin_top">40dp</dimen>
     <dimen name="activity_shop_detail_map_margin_top">20dp</dimen>
+    <dimen name="activity_main_activties_button_margin_top">10dp</dimen>
 </resources>

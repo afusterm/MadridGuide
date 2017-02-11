@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.keepcoding.madridguide.R;
-import io.keepcoding.madridguide.adapters.CustomInfoWindowAdapter;
+import io.keepcoding.madridguide.adapters.CustomShopInfoWindowAdapter;
 import io.keepcoding.madridguide.fragments.ShopsFragment;
 import io.keepcoding.madridguide.interactors.GetAllShopsFromLocalCacheInteractor;
 import io.keepcoding.madridguide.interactors.GetAllShopsInteractorResponse;
@@ -35,11 +35,11 @@ import io.keepcoding.madridguide.model.Shops;
 import io.keepcoding.madridguide.navigator.Navigator;
 import io.keepcoding.madridguide.views.OnElementClick;
 
-public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final double LATITUDE_MADRID = 40.4166922;
-    private static final double LONGITUDE_MADRID = -3.7038497;
-    private static final int ZOOM_MADRID = 10;
+import static io.keepcoding.madridguide.util.Constants.LATITUDE_MADRID;
+import static io.keepcoding.madridguide.util.Constants.LONGITUDE_MADRID;
+import static io.keepcoding.madridguide.util.Constants.ZOOM_MADRID;
 
+public class ShopsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private ShopsFragment shopsFragment;
     private SupportMapFragment mapFragment;
 
@@ -94,7 +94,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
                 googleMap.setMyLocationEnabled(true);
 
                 final Map<Marker, Shop> markerShopMap = createMarkerShops(googleMap, shops);
-                googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(getLayoutInflater(), markerShopMap));
+                googleMap.setInfoWindowAdapter(new CustomShopInfoWindowAdapter(getLayoutInflater(), markerShopMap));
 
                 googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override

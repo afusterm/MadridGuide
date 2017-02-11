@@ -1,5 +1,5 @@
 package io.keepcoding.madridguide.views;
 
 public interface OnElementClick<T> {
-    public void clickedOn(T shop, int position);
+    public void clickedOn(T model, int position);
 }

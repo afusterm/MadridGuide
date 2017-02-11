@@ -16,8 +16,9 @@ import io.keepcoding.madridguide.R;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.util.Constants;
 
+import static io.keepcoding.madridguide.util.Constants.GOOGLE_MAPS_STATIC_IMAGE_BASE_URL;
+
 public class ShopDetailActivity extends AppCompatActivity {
-    private static final String GOOGLE_MAPS_STATIC_IMAGE_BASE_URL = "http://maps.google.com/maps/api/staticmap";
     private static final String TAG = ShopDetailActivity.class.getCanonicalName();
 
     @BindView(R.id.activity_shop_detail_shop_name_text)

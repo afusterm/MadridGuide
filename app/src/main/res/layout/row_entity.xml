@@ -5,13 +5,13 @@
                 android:layout_height="100dp"
                 xmlns:tools="http://schemas.android.com/tools">
     <ImageView
-        android:id="@+id/row_shop_background_image"
+        android:id="@+id/row_entity_background_image"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         tools:src="@drawable/elcorteingles_castellana"
         android:scaleType="fitXY"/>
     <TextView
-        android:id="@+id/row_shop_name"
+        android:id="@+id/row_entity_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
@@ -21,10 +21,10 @@
         tools:text="El corte inglés"/>
 
     <ImageView
-        android:id="@+id/row_shop_logo"
+        android:id="@+id/row_entity_logo"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_centerVertical="true"
-        tools:src="@drawable/shop_detail_logo"/>
+        tools:src="@drawable/entity_detail_logo"/>
 
 </RelativeLayout>
