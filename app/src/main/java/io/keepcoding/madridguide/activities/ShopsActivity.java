@@ -110,7 +110,7 @@ public class ShopsActivity extends AppCompatActivity implements LoaderManager.Lo
     private Map<Marker, Shop> createMarkerShops(GoogleMap map, final @NonNull Shops shops) {
         Map<Marker, Shop> markerShopMap = new HashMap<>((int)shops.size());
 
-        for (Shop shop: shops.allShops()) {
+        for (Shop shop: shops.allElements()) {
             LatLng latlng = new LatLng(shop.getLatitude(), shop.getLongitude());
             Marker marker = map.addMarker(new MarkerOptions()
                                 .position(latlng)
