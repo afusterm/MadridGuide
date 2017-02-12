@@ -24,7 +24,7 @@
             android:id="@+id/activity_activity_detail_activity_name_text"
             tools:text="El corte inglés"
             android:gravity="center"
-            android:textSize="28sp"
+            android:textSize="@dimen/activity_shop_detail_shop_name_text_size"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_toRightOf="@+id/activity_activity_detail_activity_logo_image"

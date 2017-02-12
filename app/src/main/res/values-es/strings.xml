@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">MadridGuide</string>
     <string name="activity_main_shops_button_text">Tiendas</string>
-    <string name="activity_splash_text">Descargando tiendas</string>
+    <string name="activity_splash_text">Descargando datos</string>
     <string name="activity_splash_no_internet_connection">No hay conexión a Internet</string>
     <string name="activity_main_activities_button_text">Actividades</string>
 </resources>

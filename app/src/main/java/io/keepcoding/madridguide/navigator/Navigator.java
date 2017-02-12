@@ -49,6 +49,10 @@ public class Navigator {
     }
 
     public static Intent navigateToMainActivity() {
+        if (startActivity == null) {
+            return null;
+        }
+
         final Intent i = new Intent(startActivity.get(), MainActivity.class);
         startActivity.get().startActivity(i);
         startActivity.get().finish();

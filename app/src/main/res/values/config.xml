@@ -1,4 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="shops_url">http://madrid-shops.com/json/getShops.php</string>
-    <string name="activities_url">http://madrid-shops.com/json_new/getActivities.php</string>
+    <string name="google_maps_api_key">AIzaSyBBgtcLn_HBIZJYWMwvhexIfupoy_C7EPI</string>
 </resources>
