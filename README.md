@@ -40,4 +40,4 @@ Antes de compilar el proyecto hay que crear el fichero config.xml con el api key
 
 ### Descarga del apk
 
-[MadridGuide] (https://drive.google.com/open?id=0B5B4UUgctCk4SmdmUzJ2bU9FdjQ)
+[MadridGuide] (https://drive.google.com/open?id=0B5B4UUgctCk4a1d3MlU4cVlYNnM)
