@@ -1,7 +1,8 @@
 package io.keepcoding.madridguide;
 
 import android.support.annotation.NonNull;
-import android.test.AndroidTestCase;
+
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +10,19 @@ import java.util.List;
 import io.keepcoding.madridguide.model.Shop;
 import io.keepcoding.madridguide.model.Shops;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 
-public class ShopsTests extends AndroidTestCase {
+
+public class ShopsTests {
+    @Test
     public void testCreatingAShopsWithNullListReturnsNonNullShops() {
         Shops sut = Shops.build(null);
         assertNotNull(sut);
         assertNotNull(sut.allElements());
     }
 
+    @Test
     public void testCreatingAShopsWithAListReturnsNonNullShops() {
         List<Shop> data = getShops();
 
