@@ -44,7 +44,7 @@ public class ActivityDAOTests extends AndroidTestCase {
         assertEquals(0, count);
     }
 
-    public void testQueryOneShop() {
+    public void testQueryOneActivity() {
         final ActivityDAO dao = new ActivityDAO(getContext());
         final long id = insertTestActivity(dao);
         Activity sut = dao.query(id);
@@ -53,7 +53,7 @@ public class ActivityDAOTests extends AndroidTestCase {
         assertEquals(sut.getName(), ACTIVITY_TESTING_NAME);
     }
 
-    public void testQueryAllShops() {
+    public void testQueryAllActivities() {
         final ActivityDAO dao = new ActivityDAO(getContext());
         final long id = insertTestActivity(dao);
         List<Activity> activityList = dao.query();
